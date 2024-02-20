@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th-"http://www.tymeleaf.org" th:fragment="layout(content)">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/styles.css}">
+    <title>base</title>
+</head>
+
+<body>
+    <h1>Common Header</h1>
+    <div th:replace="${content}">
+
+    </div>
+    <h4>Common footer</h4>
+</body>
+
+</html>

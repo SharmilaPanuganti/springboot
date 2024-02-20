@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th-"http://www.tymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fragments</title>
+</head>
+
+<body>
+    <h2>fragment services</h2>
+    <!-- <footer id="hostTag" th:replace="footer::footer1">
+      
+    </footer> -->
+    <footer id="hostTag" th:insert="footer::footer1(${title},${subtitle})">
+
+    </footer>
+    <footer id="hostTag" th:include="footer::footer1('Title2','subtitle2')">
+
+    </footer>
+</body>
+
+</html>

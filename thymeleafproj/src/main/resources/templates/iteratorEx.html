@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th-"http://www.tymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iteration</title>
+</head>
+
+<body>
+    <h3>Iteration Collections</h3>
+    <p th:text="${names}"></p>
+    <ul>
+        <li th:each="n,status:${names}"><span th:text="${status.index+1}+' '+${n}"
+                th:style="${status.odd?'color:red;font-weight:bold':'font-weight:normal'}"></span>
+        </li>
+    </ul>
+</body>
+
+</html>

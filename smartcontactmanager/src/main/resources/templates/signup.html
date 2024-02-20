@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::layout(~{::section})">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+</head>
+
+<body>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <div class="my-card mt-1">
+                        <div class="container">
+                            <div class="text-center">
+                                <img class="img-fluid" style="width:80px;" src="" th:src="@{/img/membership.jpg}"
+                                    alt="">
+                                </img>
+                            </div>
+                            <h1 class="text-center">Register Here!!</h1>
+                            <!-- <p th:text="${#httpSessionAttributes.message}"></p> -->
+                            <div th:if="${session.msg}" th:classAppend="${session.msg.getCssClass()}" class="alert"
+                                role="alert">
+                                <p class="text-center" th:text="${session.msg.getMessage()}"></p>
+
+                                <div th:text="${@sessionManager.removeVerificationMessageFromSession()}"></div>
+
+                            </div>
+
+                            <form th:action="@{/do_register}" method="post" th:object="${user}" novalidate>
+                                <!----  ---->
+                                <div class="form-group">
+                                    <label for="name" class="form-label">Your Name </label>
+                                    <input type="text" class="form-control" id="name" palceholder="Enter here"
+                                        th:value="${user.name}"
+                                        th:classAppend="${#fields.hasErrors('name')?'is-invalid':''}" name="name" />
+                                    <div class="invalid-feedback" th:each="e:${#fields.errors('name')}" th:text="${e}">
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <label for="email" class="form-label">Your Email </label>
+                                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
+                                        palceholder="Enter Email" required th:value="${user.email}" name="email" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="password_field" class="form-label">Your Password </label>
+                                    <input type="password" class="form-control" id="password_field"
+                                        aria-describedby="emailHelp" palceholder="Enter password" required
+                                        th:value="${user.password}" name="password" />
+
+                                </div>
+                                <div class="form-group">
+                                    <textarea palceholder="enter something yourself" rows="6" class="form-control"
+                                        th:value="${user.about}" name="about"></textarea>
+                                    <div class="form-group form-check">
+                                        <input type="checkbox" name="agreement" class="form-check-input"
+                                            id="agreement" />
+                                        <label for="agreement">Accept terms and conditions</label>
+                                    </div>
+                                    <div class=" container text-center">
+                                        <button type="submit" class="btn bg-primary btn-block text-white">
+                                            Submit
+                                        </button>
+                                        <button type="reset" class="btn btn-warning btn-block text-white">
+                                            Reset
+                                        </button>
+                                    </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>
