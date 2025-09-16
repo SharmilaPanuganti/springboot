@@ -8,9 +8,9 @@ import {
   Col,
   Button,
   Input,
+  Label,
 } from "reactstrap";
 import Base from "../components/base";
-// import { Button } from "bootstrap";
 import { useState } from "react";
 import { loginUser } from "../services/user-services";
 import { doLogin } from "../auth";
@@ -25,41 +25,38 @@ const Login = () => {
     username: "",
     password: "",
   });
+
   const handleChange = (event, field) => {
-    let actualValue = event.target.value;
     setLoginDetail({
       ...loginDetail,
-      [field]: actualValue,
+      [field]: event.target.value,
     });
   };
+
   const handleReset = () => {
     setLoginDetail({
-      username: " ",
-      password: " ",
+      username: "",
+      password: "",
     });
   };
+
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    console.log(loginDetail);
-    if (loginDetail.username.trim() == "" || loginDetail.password == "") {
-      toast.error("Username or password  is required!!");
+
+    if (loginDetail.username.trim() === "" || loginDetail.password === "") {
+      toast.error("Username or password is required!!");
       return;
     }
-    //submit the data to server to generate token
+
     loginUser(loginDetail)
       .then((data) => {
-        console.log(data);
-        //save the data to localstorage
         doLogin(data, () => {
-          console.log("login detail is saved to localstorage");
-          //redirect to user dashboard
           navigate("/user/dashboard");
         });
         toast.success("Login Success");
       })
       .catch((error) => {
-        console.log(error);
-        if (error.response.status == 400 || error.response.status == 404) {
+        if (error.response?.status === 400 || error.response?.status === 404) {
           toast.error(error.response.data.message);
         } else {
           toast.error("Something went wrong on server !!");
@@ -69,45 +66,74 @@ const Login = () => {
 
   return (
     <Base>
-    <CustomNavbar/>
-      <Container>
-        <Row className="mt-4">
-          <Col sm={{ size: 6, offset: 3 }}>
-            <Card color="dark" inverse>
-              <CardHeader>
-                <h3>Login Here!!</h3>
+      <CustomNavbar />
+      <Container
+        className="d-flex justify-content-center align-items-center"
+        style={{ minHeight: "80vh" }}
+      >
+        <Row className="w-100">
+          <Col sm={{ size: 6, offset: 3 }} md={{ size: 4, offset: 4 }}>
+            <Card
+              className="shadow-lg border-0"
+              style={{ borderRadius: "15px" }}
+            >
+              <CardHeader
+                className="text-center text-white"
+                style={{
+                  background: "linear-gradient(135deg, #667eea, #764ba2)",
+                  borderTopLeftRadius: "15px",
+                  borderTopRightRadius: "15px",
+                }}
+              >
+                <h3 className="mb-0">Login</h3>
               </CardHeader>
-              <CardBody>
+              <CardBody className="p-4">
                 <form onSubmit={handleFormSubmit}>
-                  {/*Email field*/}
+                  {/* Email field */}
                   <FormGroup>
-                    <label htmlFor="email" className="fomr-label">Enter Email</label>
+                    <Label htmlFor="email" className="fw-bold">
+                      Email
+                    </Label>
                     <Input
                       type="text"
                       id="email"
+                      placeholder="Enter your email"
                       value={loginDetail.username}
                       onChange={(e) => handleChange(e, "username")}
-                      className="form-control"
+                      className="rounded-pill"
                     />
                   </FormGroup>
-                  <FormGroup>
-                    <label htmlFor="password" className="form-label">Enter Password</label>
+
+                  {/* Password field */}
+                  <FormGroup className="mt-3">
+                    <Label htmlFor="password" className="fw-bold">
+                      Password
+                    </Label>
                     <Input
                       type="password"
                       id="password"
+                      placeholder="Enter your password"
+                      value={loginDetail.password}
                       onChange={(e) => handleChange(e, "password")}
-                      className="form-control"
+                      className="rounded-pill"
                     />
                   </FormGroup>
-                  <Container className="text-center">
-                    <Button color="light" outline type="submit">
+
+                  {/* Buttons */}
+                  <Container className="text-center mt-4">
+                    <Button
+                      color="primary"
+                      type="submit"
+                      className="px-4 rounded-pill"
+                    >
                       Login
                     </Button>
                     <Button
                       onClick={handleReset}
-                      className="ms-2"
-                      outline-color="secondary"
-
+                      color="secondary"
+                      type="button"
+                      className="ms-3 px-4 rounded-pill"
+                      outline
                     >
                       Reset
                     </Button>
@@ -121,4 +147,5 @@ const Login = () => {
     </Base>
   );
 };
+
 export default Login;

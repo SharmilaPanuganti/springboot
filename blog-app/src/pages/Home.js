@@ -7,9 +7,10 @@ import { Container, Row, Col } from "reactstrap";
 const Home = () => {
   return (
     <Base>
-    <CustomNavbar />
-      <Container className="mt-3">
-      
+      <CustomNavbar />
+
+      {/* Add padding-top to push content below navbar */}
+      <Container className="mt-5 pt-4">
         <Row>
           <Col md={2} className="pt-5">
             <CategorySideMenu />
@@ -19,8 +20,8 @@ const Home = () => {
           </Col>
         </Row>
       </Container>
-      
     </Base>
   );
 };
+
 export default Home;

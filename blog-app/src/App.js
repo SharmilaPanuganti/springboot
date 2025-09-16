@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import Singup from "./pages/Signup";
+import Signup from "./pages/Signup";
 import About from "./pages/About";
 import Services from "./pages/sevices";
 import { ToastContainer } from "react-toastify";
@@ -29,7 +29,7 @@ function App() {
           }
         /> */}
         <Route path="/login" element={<Login />}></Route>
-        <Route path="/signup" element={<Singup />}></Route>
+        <Route path="/signup" element={<Signup />}></Route>
         <Route path="/about" element={<About />}></Route>
         <Route path="/sevices" element={<Services />} />
         <Route path="/posts/:postId" element={<PostPage />} />

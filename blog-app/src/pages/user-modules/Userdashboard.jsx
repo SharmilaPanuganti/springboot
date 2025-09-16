@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Base from "../../components/base";
-import { Container } from "reactstrap";
+import { Container, Row, Col, Card, CardBody, Button } from "reactstrap";
 import AddPost from "../../components/AddPost";
-import NewFeed from "../../components/NewFeed";
 import { getCurrentUserDetail } from "../../auth";
-import { loadPostUserWise } from "../../services/post-services";
+import { loadPostUserWise, deletePostService } from "../../services/post-services";
 import Post from "../../components/Post";
-import { deletePostService } from "../../services/post-services";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CustomNavbar from "../../components/CustomNavbar";
@@ -14,8 +12,8 @@ import CustomNavbar from "../../components/CustomNavbar";
 const Userdashboard = () => {
   const [user, setUser] = useState({});
   const [posts, setPosts] = useState([]);
+
   useEffect(() => {
-    console.log(getCurrentUserDetail());
     setUser(getCurrentUserDetail());
     loadPostData();
   }, []);
@@ -23,42 +21,73 @@ const Userdashboard = () => {
   function loadPostData() {
     loadPostUserWise(getCurrentUserDetail().id)
       .then((data) => {
-        console.log(data);
         setPosts([...data]);
       })
-      .catch((error) => {
-        console.log(error);
-        toast.error("error in loading user posts");
-      });
+      .catch(() => toast.error("❌ Error in loading user posts"));
   }
-  //function to delete post
+
   const deletePost = (post) => {
-    //going to delete post
     deletePostService(post.postId)
-      .then((res) => {
-        console.log(res);
-        toast.success("Post is deleted...");
-        //loadPostData()
-        let newPosts = posts.filter((p) => p.postId != post.postId);
+      .then(() => {
+        toast.success("🗑️ Post deleted successfully!");
+        let newPosts = posts.filter((p) => p.postId !== post.postId);
         setPosts([...newPosts]);
       })
-      .catch((error) => {
-        console.log(error);
-        toast.error("error in deleting post");
-      });
+      .catch(() => toast.error("⚠️ Error in deleting post"));
   };
+
   return (
     <Base>
-     <CustomNavbar/>
-      <Container>
-       
-        <AddPost />
-        <h3 className="my-3">Posts Count : ({posts.length})</h3>
-        {posts.map((post, index) => {
-          return <Post post={post} key={index} deletePost={deletePost} />;
-        })}
+      <CustomNavbar />
+      <Container className="mt-4">
+        {/* User Welcome Section */}
+        <Row className="mb-4">
+          <Col>
+            <Card className="shadow-sm border-0 bg-light">
+              <CardBody className="d-flex justify-content-between align-items-center">
+                <div>
+                  <h4 className="mb-1 text-dark">
+                    Welcome, <span className="fw-bold text-primary">{user?.name || "User"}</span>
+                  </h4>
+                  <p className="text-muted mb-0">Manage your posts and add new content here.</p>
+                </div>
+
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+
+        {/* Add Post Form */}
+        <Row>
+          <Col>
+            <AddPost />
+          </Col>
+        </Row>
+
+        {/* Posts Section */}
+        <Row className="mt-4">
+          <Col>
+            <h5 className="fw-bold text-dark mb-3">
+              📌 Your Posts <span className="badge bg-primary">{posts.length}</span>
+            </h5>
+            {posts.length === 0 ? (
+              <div className="text-center text-muted py-5">
+                <h6>No posts yet! Start by creating one above.</h6>
+              </div>
+            ) : (
+              posts.map((post, index) => (
+                <Post
+                  post={post}
+                  key={index}
+                  deletePost={deletePost}
+                />
+              ))
+            )}
+          </Col>
+        </Row>
       </Container>
     </Base>
   );
 };
+
 export default Userdashboard;

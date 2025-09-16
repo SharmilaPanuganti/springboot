@@ -7,76 +7,87 @@ import {
   Container,
   Table,
 } from "reactstrap";
-import { getCurrentUserDetail } from "../auth";
-import { isloggedIn } from "../auth";
+import { getCurrentUserDetail, isloggedIn } from "../auth";
+
 const ViewUserprofile = ({ user }) => {
   const [currentUser, setCurrentUser] = useState(null);
-  const [login, setlogin] = useState(null);
+  const [login, setLogin] = useState(null);
+
   useEffect(() => {
     setCurrentUser(getCurrentUserDetail());
-    setlogin(isloggedIn());
+    setLogin(isloggedIn());
   }, []);
+
   return (
-    <Card className="mt-2 border-0 rounded-0 shadow-sm">
-      <CardBody>
-        <h3 className="text-uppercase">user Information</h3>
+    <Card className="mt-4 border-0 shadow rounded-3">
+      <CardBody className="text-center">
+        <h3 className="text-uppercase fw-bold text-primary mb-4">
+          👤 User Information
+        </h3>
+
+        {/* Profile Picture */}
+        <Container className="mb-4">
+          <img
+            style={{
+              width: "160px",
+              height: "160px",
+              objectFit: "cover",
+              borderRadius: "50%",
+              border: "4px solid #0d6efd",
+              boxShadow: "0px 4px 10px rgba(0,0,0,0.15)",
+            }}
+            src={
+              user.image ||
+              "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+            }
+            alt="User profile"
+          />
+        </Container>
+
+        {/* User Info Table */}
+        <Table
+          responsive
+          bordered
+          hover
+          className="text-center align-middle shadow-sm"
+        >
+          <tbody>
+            <tr>
+              <td className="fw-bold">ID</td>
+              <td>LCWD{user.id}</td>
+            </tr>
+            <tr>
+              <td className="fw-bold">Username</td>
+              <td>{user.username}</td>
+            </tr>
+            <tr>
+              <td className="fw-bold">Email</td>
+              <td>{user.email}</td>
+            </tr>
+            <tr>
+              <td className="fw-bold">About</td>
+              <td className="text-muted">{user.about || "—"}</td>
+            </tr>
+            <tr>
+              <td className="fw-bold">Role</td>
+              <td>
+                <span className="badge bg-success">{user.role}</span>
+              </td>
+            </tr>
+          </tbody>
+        </Table>
       </CardBody>
-      <Container>
-        <img
-          style={{ maxWidth: "200px", maxHeight: "200px" }}
-          src={
-            user.image
-              ? user.image
-              : "https://www.google.com/url?sa=i&url=https%3A%2F%2Fdribbble.com%2Fshots%2F5679189-Default-Profile-Image&psig=AOvVaw22PkJZpUxWZjuydTwa0ctt&ust=1694341401128000&source=images&cd=vfe&opi=89978449&ved=0CBAQjRxqFwoTCJjw89ynnYEDFQAAAAAdAAAAABAE"
-          }
-          alt="use profile picture"
-          className="image-fluid"
-        ></img>
-      </Container>
-      <Table
-        responsive
-        striped
-        hover
-        bordered={true}
-        className="text-center mt-5"
-      >
-        <tbody>
-          <tr>
-            <td>LCWDB1LOGS ID</td>
-            <td>LCWD{user.id}</td>
-          </tr>
-          <tr>
-            <td>USER NAME</td>
-            <td>{user.username}</td>
-          </tr>
-          <tr>
-            <td>USER EMAIL</td>
-            <td>{user.email}</td>
-          </tr>
-          <tr>
-            <td>ABOUT</td>
-            <td>{user.about}</td>
-          </tr>
-          <tr>
-            <td>ROLE</td>
-            <td>
-              {user.role}
-            </td>
-          </tr>
-        </tbody>
-      </Table>
-      {currentUser ? (
-        currentUser.id == user.id ? (
-          <CardFooter className="text-center">
-            <Button color="warning">Update Profile</Button>
-          </CardFooter>
-        ) : (
-          ""
-        )
-      ) : (
-        ""
+
+      {/* Update Profile Button (Only if current user is viewing their own profile) */}
+      {currentUser?.id === user.id && (
+        <CardFooter className="text-center bg-light">
+          <Button color="warning" className="px-4 shadow-sm">
+            ✏️ Update Profile
+          </Button>
+        </CardFooter>
       )}
     </Card>
   );
 };
+
 export default ViewUserprofile;
