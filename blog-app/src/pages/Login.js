@@ -50,10 +50,16 @@ const Login = () => {
 
     loginUser(loginDetail)
       .then((data) => {
+
+      if(data!=null&& data!=''){
         doLogin(data, () => {
           navigate("/user/dashboard");
         });
+
         toast.success("Login Success");
+        }else{
+        toast.error("Invalid Username or Password");
+        }
       })
       .catch((error) => {
         if (error.response?.status === 400 || error.response?.status === 404) {
@@ -92,7 +98,7 @@ const Login = () => {
                   {/* Email field */}
                   <FormGroup>
                     <Label htmlFor="email" className="fw-bold">
-                      Email
+                      Username
                     </Label>
                     <Input
                       type="text"

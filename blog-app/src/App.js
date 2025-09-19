@@ -14,7 +14,12 @@ import Userdashboard from "./pages/user-modules/Userdashboard";
 import Privateroute from "./components/Privateroute";
 import PostPage from "./pages/PostPage";
 import ProfileInfo from "./pages/user-modules/Profileinfo";
+import 'aos/dist/aos.css';
+import AOS from 'aos';
+
+
 function App() {
+AOS.init({ duration: 800, easing: 'ease-in-out', once: true });
   return (
     <BrowserRouter>
       <ToastContainer position="bottom-center" />

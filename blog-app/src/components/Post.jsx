@@ -17,6 +17,7 @@ const Post = ({
     id: 123,
   },
 }) => {
+    console.log(post)
   return (
     <Card className="shadow-sm border-0 rounded-3 mb-4">
       <CardBody>
@@ -40,7 +41,7 @@ const Post = ({
             <Button
               color="success"
               tag={Link}
-              to={`/posts/${post.id}`}
+              to={`/posts/${post.postId}`}
               className="px-4 shadow-sm"
             >
               <i className="bi bi-book me-2"></i> Read More

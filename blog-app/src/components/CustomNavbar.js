@@ -33,7 +33,7 @@ const CustomNavbar = () => {
       setLogin(false);
       setUser({
         login: false,
-        datat: null,
+        data: null,
       });
       navigate("/");
     });

@@ -1,13 +1,14 @@
 import CustomNavbar from "./CustomNavbar";
 
+
 const Base = ({ title = "Welcome to website", children }) => {
   return (
     <div
       className="d-flex flex-column min-vh-100"
       style={{
         // Full app background (gradient or image)
-        background: "linear-gradient(135deg, #1f1c2c, #928dab)",
-        // or: background: "url('/images/bg-pattern.png') no-repeat center center / cover",
+//        background: "linear-gradient(135deg, #1f1c2c, #928dab)",
+         background: "url('/images/img.png') no-repeat center center / cover",
         minHeight: "100vh",
       }}
     >

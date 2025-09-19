@@ -14,6 +14,8 @@ import {
 } from "reactstrap";
 import Post from "./Post";
 import { toast } from "react-toastify";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const NewFeed = () => {
   const [postContent, setPostContent] = useState({
@@ -79,8 +81,10 @@ const NewFeed = () => {
               dataLength={postContent.content.length}
               style={{ overflow: "visible" }}
             >
-              {postContent.content.map((post) => (
-                <Post post={post} key={post.postId} />
+              {postContent.content.map((post,index) => (
+                  <div data-aos="fade-up"  data-aos-delay={index * 100}>
+                <Post post={post} key={post.postId}  />
+                </div>
               ))}
             </InfiniteScroll>
           )}

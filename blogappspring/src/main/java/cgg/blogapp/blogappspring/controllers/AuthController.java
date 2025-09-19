@@ -19,6 +19,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,26 +50,37 @@ public class AuthController {
   @Autowired
   private ModelMapper modelMapper;
 
-  @PostMapping("/login")
-  public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest request)
-    throws ResourceNotFoundException {
-    this.doAuthenticate(request.getUsername(), request.getPassword());
-    System.out.println("username : " + request.getUsername());
-    UserDetails userDetails = uDetailsService.loadUserByUsername(
-      request.getUsername()
-    );
-    User byUsername = userRepository
-      .findByUsername(request.getUsername())
-      .orElseThrow(() -> new ResourceNotFoundException("user", "name", 0));
-    UserDTO user = modelMapper.map(byUsername, UserDTO.class);
-    String token = helper.generateToken(userDetails);
-    JwtResponse response = JwtResponse
-      .builder()
-      .token(token)
-      .user(user)
-      .build();
+  @Autowired
+    PasswordEncoder passwordEncoder;
 
-    return ResponseEntity.ok(response);
+  @PostMapping("/login")
+  public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest request)   {
+      try {
+          UserDetails userDetails = uDetailsService.loadUserByUsername(request.getUsername());
+
+          this.doAuthenticate(request.getUsername(), request.getPassword());
+          System.out.println("username : " + request.getUsername());
+          userDetails = uDetailsService.loadUserByUsername(
+                  request.getUsername()
+          );
+
+          User byUsername = userRepository
+                  .findByUsername(request.getUsername())
+                  .orElseThrow(() -> new ResourceNotFoundException("user", "name", 0));
+          UserDTO user = modelMapper.map(byUsername, UserDTO.class);
+          String token = helper.generateToken(userDetails);
+          JwtResponse response = JwtResponse
+                  .builder()
+                  .token(token)
+                  .user(user)
+                  .build();
+
+          return ResponseEntity.ok(response);
+      } catch (ResourceNotFoundException e) {
+         return  ResponseEntity.ok(null);
+      } catch(BadCredentialsException e) {
+          return  ResponseEntity.ok(null);
+      }
   }
 
   private void doAuthenticate(String userName, String password) {
@@ -79,7 +91,7 @@ public class AuthController {
     try {
       authManager.authenticate(authenticationToken);
     } catch (BadCredentialsException ex) {
-      throw new BadCredentialsException("Invalide username or password");
+      throw new BadCredentialsException("Invalid username or password");
     }
   }
 
