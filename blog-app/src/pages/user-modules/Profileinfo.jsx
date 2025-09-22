@@ -4,7 +4,7 @@ import { userContext } from "../../context/userContext";
 import { useParams } from "react-router-dom";
 import ViewUserprofile from "../../components/ViewUseProfile";
 import { getUser } from "../../services/user-services";
-import { Row, Col, Card, CardBody, Container, Table } from "reactstrap";
+import { Row, Col, Card, CardBody, Container, Table ,Spinner} from "reactstrap";
 import { getCurrentUserDetail } from "../../auth";
 import CustomNavbar from "../../components/CustomNavbar";
 function ProfileInfo() {
