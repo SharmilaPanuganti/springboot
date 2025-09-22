@@ -75,6 +75,9 @@ function ProfileInfo() {
       </Row>
     );
   };
-  return <Base> <CustomNavbar/>{user ? userView() : "Loading User Data..."}</Base>;
+  return <Base> <CustomNavbar/>{user ? userView() :  <div className="text-center py-5">
+                                                                  <Spinner color="primary" size="lg" />
+                                                                  <p className="mt-3 text-muted">Loading ...</p>
+                                                                </div>}</Base>;
 }
 export default ProfileInfo;
