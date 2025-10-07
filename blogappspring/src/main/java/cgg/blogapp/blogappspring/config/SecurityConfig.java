@@ -64,11 +64,7 @@ public class SecurityConfig {
       .csrf(csrf -> csrf.disable())
       .authorizeHttpRequests(auth ->
         auth
-          .requestMatchers("/api/v1/posts/**")
-          .permitAll()
           .requestMatchers("/api/v1/users/**")
-          .hasRole("USER")
-          .requestMatchers("/api/v1/posts/**")
           .hasRole("USER")
           .requestMatchers("/api/v1/categories/**")
           .hasRole("USER")
@@ -78,7 +74,7 @@ public class SecurityConfig {
           .hasRole("ADMIN")
           .requestMatchers("/api/v1/auth/**")
           .permitAll()
-          .requestMatchers(HttpMethod.GET)
+          .requestMatchers(HttpMethod.GET,"/api/v1/posts/**")
           .permitAll()
       )
       .exceptionHandling(e -> e.authenticationEntryPoint(entryPoint))
